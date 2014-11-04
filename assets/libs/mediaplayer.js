@@ -18,8 +18,8 @@ var Protocol = {
 **/
 var MessageChannel = function(channelId){
     var self = this;
-    var wsServer = "ws://127.0.0.1:9439/channels/"+channelId,
-    // var wsServer = "ws://127.0.0.1:9439/receiver",
+    // var wsServer = "ws://127.0.0.1:9439/channels/"+channelId,
+    var wsServer = "ws://127.0.0.1:9439/receiver",
         msg = null,
         senderId = null,
         messageType = null;
@@ -106,6 +106,13 @@ var MediaPlayer = function(videoId){
     var channelId = guid();
     
     console.info("---------------------------------------------------> player receiverDaemon: ");
+
+    //Receiver Daemon instance
+    var receiverDaemon = new ReceiverDaemon();
+    /**
+    * start Receiver Daemon
+    */
+    receiverDaemon.open();
     receiverDaemon.on("opened", function(){
         var wsAddress = "ws://"+receiverDaemon.localIpAddress+":9439/channels/"+channelId;
         console.info("-------------------------------------> player ws addr: ", wsAddress);

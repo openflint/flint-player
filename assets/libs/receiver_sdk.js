@@ -29,8 +29,8 @@ function guid(){
 var ReceiverDaemon = function(){
     var self = this;
 
-    var wsServer = "ws://localhost:9431/receiver/"+appid,
-    // var wsServer = "ws://localhost:9431/receiver",
+    // var wsServer = "ws://localhost:9431/receiver/"+appid,
+    var wsServer = "ws://localhost:9431/receiver",
         ws = null,
         sender = {
             "count":0,
@@ -73,7 +73,7 @@ var ReceiverDaemon = function(){
                     self._onsenderchange(data, "senderdisconnected");
                     break;
                 default:
-                     ("onmessage" in self)&&(self.onmessage(data));
+                    ("onmessage" in self)&&(self.onmessage(data));
                     break;
             }
         }
@@ -174,10 +174,3 @@ var ReceiverDaemon = function(){
         self["on"+type] = func;
     };
 };
-
-//Receiver Daemon instance
-var receiverDaemon = new ReceiverDaemon();
-/**
-* start Receiver Daemon
-*/
-receiverDaemon.open();
