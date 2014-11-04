@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>sender</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+        <style type="text/css">
+        </style>
+
+    </head>
+    <body>
+    </body>
+    <script>
+        var proto_senderconnected = JSON.stringify({
+            "type": "senderconnected",
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-1",
+            "data": '{"senderId": "abcd-1234","userAgent": "ios.xxx"}'
+        });
+        proto_senderconnected = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_senderconnected});
+
+        var proto_load = JSON.stringify({
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-2",
+            "data": '{"type": "LOAD","media": {"contentId": "http://fling.infthink.com/droidream/samples/BigBuckBunny.mp4","contentType": "video/mp4","metadata": {"title": "兔子","subtitle": "大兔子"}}}'
+        });
+        proto_load = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_load});
+        
+        var proto_volumechange = JSON.stringify({
+            "level": 0.7,
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-3",
+            "data": '{"type": "systemvolumechanged","muted": false}'
+        });
+        proto_volumechange = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_volumechange});
+
+        var proto_pause = JSON.stringify({
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-4",
+            "data": '{"type": "PAUSE"}'
+        });
+        proto_pause = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_pause});
+
+        var proto_play = JSON.stringify({
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-5",
+            "data": '{"type": "PLAY"}'
+        });
+        proto_play = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_play});
+
+        var proto_seek = JSON.stringify({
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-6",
+            "data": '{"type": "SEEK","currentTime":360}'
+        });
+        proto_seek = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_seek});
+
+        var proto_ping = JSON.stringify({
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-6",
+            "data": '{"type": "PING"}'
+        });
+        proto_ping = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_ping});
+
+        var proto_getstatus = JSON.stringify({
+            "namespace": "urn:x-cast:com.google.cast.system",
+            "senderId": "SystemSender",
+            "requestId": "requestId-6",
+            "data": '{"type": "GET_STATUS"}'
+        });
+        proto_getstatus = JSON.stringify({"senderId":"xxx-1111","type":"message", "data": proto_getstatus});
+
+        // var wsServer = "ws://127.0.0.1:9439/channels/mediaplayer";
+        var wsServer = "ws://127.0.0.1:9439/sender";
+        var ws = new WebSocket(wsServer);
+        ws.onopen = function (evt) {
+            console.info("conn success");
+        }; 
+        ws.onclose = function (evt) { 
+            
+        }; 
+        ws.onmessage = function (evt) { 
+            var data = JSON.parse(evt.data);
+            console.info("------->onmessage: ", evt.data);
+        }; 
+        ws.onerror = function (evt) {
+            evt.message = "Underlying websocket is not open";
+            evt.socketReadyState = evt.target.readyState;
+            console.info("error");
+        };
+
+        setTimeout(function(){
+            // console.info(proto_senderconnected);
+            // ws.send(proto_senderconnected);
+
+            console.info(proto_load);
+            ws.send(proto_load);
+
+            // console.info(proto_volumechange);
+            // ws.send(proto_volumechange);
+
+            // console.info(proto_pause);
+            // ws.send(proto_pause);
+
+            // console.info(proto_play);
+            // ws.send(proto_play);
+            
+            // console.info(proto_seek);
+            // ws.send(proto_seek);
+
+            // console.info(proto_getstatus);
+            // ws.send(proto_getstatus);
+
+            // console.info(proto_ping);
+            // ws.send(proto_ping);
+            
+        },100);
+    </script>
+</html>

@@ -1,0 +1,409 @@
+@-moz-keyframes showtimeline {
+    from {
+        bottom: 2%;
+        opacity: 0;
+    }
+    to {
+        bottom: 5%;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes showtimeline {
+    from {
+        bottom: 2%;
+        opacity: 0;
+    }
+    to {
+        bottom: 5%;
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes hidetimeline {
+    from {
+        bottom: 5%;
+        opacity: 1;
+    }
+    to {
+        bottom: 2%;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes hidetimeline {
+    from {
+        bottom: 5%;
+        opacity: 1;
+    }
+    to {
+        bottom: 2%;
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes showicon {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes showicon {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes hideicon {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes hideicon {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+html {
+    background-color: #000;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    text-align: left;
+    color: #FFF;
+    font-family: 'Open Sans', arial, sans-serif, Helvetica, "Microsoft Yahei", Tahoma;
+    height: 100%;
+}
+
+div, img, ul, ol, li, dl, dt, dd, p, h1, video {
+    border: 0;
+    margin: 0;
+    padding: 0
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0;
+}
+
+ul li {
+    list-style: none outside none;
+}
+
+/* Clear Fix */
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+}
+
+.clearfix {
+    display: block;
+}
+
+.clearie {
+    clear: both;
+}
+
+.hide {
+    visibility: hidden;
+}
+.hide_static{
+    visibility: hidden;
+}
+
+.show {
+    -moz-animation: showicon .5s;
+    -webkit-animation: showicon .5s;
+}
+
+.hidden {
+    -moz-animation: hideicon .5s;
+    -webkit-animation: hideicon .5s;
+    opacity: 0;
+}
+
+video {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 4em;
+    margin: 0 0 .25em;
+    font-weight: 300;
+    line-height: 1.15;
+}
+
+.i {
+    height: 254px;
+    width: 254px;
+    background: url("imgs/i-2.png") repeat-x scroll transparent;
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -127px;
+    margin-top: -127px;
+    z-index: 1;
+}
+
+.i.i-play {
+    background-position: -254px -254px;
+}
+
+.i.i-volume-0 {
+    background-position: 0 -254px;
+}
+
+.i.i-volume-1 {
+    background-position: 0 0;
+}
+
+.i.i-volume-2 {
+    background-position: -255px 0;
+}
+
+.i.i-volume-3 {
+    background-position: -509px 0;
+}
+
+.i.i-volume-4 {
+    background-position: -763px 0;
+}
+
+.i.i-volume-5 {
+    background-position: -1017px 0;
+}
+
+.i.i-volume-6 {
+    background-position: -1271px 0;
+}
+
+.i.i-volume-7 {
+    background-position: -1525px 0;
+}
+
+.i.i-volume-8 {
+    background-position: -1779px 0;
+}
+
+.i.i-volume-9 {
+    background-position: -2033px 0;
+}
+
+.i.i-volume-10 {
+    background-position: -2287px 0;
+}
+
+.i.i-alert {
+    width: 122px;
+    height: 122px;
+    background-position: -1153px -254px;
+    display: inline-block;
+}
+
+.title {
+    position: absolute;
+    left: 5%;
+    top: 10%;
+    text-shadow: 2px 2px 4px #C16A10;
+    z-index: 1;
+}
+
+.loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -111px;
+    margin-top: -111px;
+}
+.loading svg{width:222px; height: 222px;fill:#FFF;}
+
+.timeline {
+    position: absolute;
+    width: 86%;
+    z-index: 1;
+    height: 50px;
+    left: 7%;
+}
+
+.timeline.show {
+    bottom: 5%;
+    -moz-animation: showtimeline .5s;
+    -webkit-animation: showtimeline .5s;
+}
+
+.timeline.hidden {
+    bottom: 0%;
+    -moz-animation: hidetimeline .5s;
+    -webkit-animation: hidetimeline .5s;
+    opacity: 0;
+}
+
+.timeline .timeline-inner {
+    position: relative;
+}
+
+.timeline .timeline-inner .timeline-bg {
+    height: 50px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: .2;
+}
+
+.timeline .timeline-inner .timeline-bg.base-bg {
+    width: 100%;
+    background-color: #666;
+    z-index: 2;
+}
+
+.timeline .timeline-inner .timeline-bg.loaded-bg {
+    background-color: #FFF;
+    z-index: 3;
+}
+
+.timeline .timeline-inner .timeline-bg.played-bg {
+    background-color: #C16A10;
+    z-index: 4;
+    opacity: 1;
+}
+
+.timeline .timeline-inner .time {
+    display: inline-block;
+    position: absolute;
+    z-index: 5;
+    height: 50px;
+    line-height: 50px;
+    font-size: 25px;
+}
+
+.timeline .timeline-inner .time.time-played {
+    left: 25px;
+}
+
+.timeline .timeline-inner .time.time-total {
+    right: 25px;
+}
+
+.timeline .timeline-inner .time-label{
+    background: url("imgs/i-2.png") repeat-x scroll transparent;
+    background-position: -1016px -254px;
+    width:137px;
+    height: 110px;
+    display: inline-block;
+    font-size: 25px;
+    position: absolute;
+    z-index: 6;
+    top: -60px;
+    text-align: center;
+    line-height: 43px;
+}
+
+.alert {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 666px;
+    height: 222px;
+    margin-left: -333px;
+    margin-top: -111px;
+    color: #FFF;
+    font-size: 25px;
+}
+
+.alert .alert-inner {
+    position: relative;
+    width: 666px;
+    height: 222px;
+}
+
+.alert .alert-inner .alert-backend {
+    background: #c16a10;
+    opacity: .8;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 998;
+    width: 100%;
+    width: 666px;
+    height: 222px;
+}
+
+.alert .alert-inner .alert-msg {
+    clear: both;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    padding: 50px;
+}
+
+.alert .alert-inner .alert-msg .i.i-alert {
+    float: left;
+    width: 122px;
+    height: 122px;
+    margin-right: 50px;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    position: static;
+    top: 0;
+}
+
+.alert .alert-inner .alert-msg .text {
+    float: left;
+    height: 122px;
+    line-height: 160%;
+    width: 394px;
+}
+
+.alert .alert-inner .alert-msg .text .text-inner {
+    display: table-cell;
+    vertical-align: middle;
+    height: 122px;
+}
+
+
+.logo{
+    width: 470px;
+    height: 291px;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    margin-left: -235px;
+    margin-top: -145px;
+    z-index:999;
+}
+
+.logo.hide{
+    display:none;
+}
+.logo.hide_static{
+    display:none;
+}

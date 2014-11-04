@@ -84,7 +84,7 @@ var MessageChannel = function(channelId){
 * });
 * //send message to receiver
 * mediaPlayer.send("{String}");
-* @param {String} video Element id
+* @param {String|videoElement} video Element id  or video element
 **/
 var MediaPlayer = function(videoId){
     var self = this;
@@ -112,7 +112,7 @@ var MediaPlayer = function(videoId){
         receiverDaemon.send({"type":"additionaldata","additionaldata":{ "serverId": wsAddress}});
     });
     
-    var video = document.getElementById(videoId);
+    var video = (typeof(videoId)=="string")?document.getElementById(videoId):videoId;
     if(video==null){
         throw Error("video element undefined!");
     }
@@ -192,7 +192,7 @@ var MediaPlayer = function(videoId){
     * 用于将video的状态发送给sender，完成与sender的heartbeat
     **/
     var MessageReport = function(){
-        var namespace = "urn:x-cast:com.google.cast.media",  
+        var namespace = "urn:x-cast:com.google.cast.media",
             senderId = "*:*";
             
         function loadData(){
@@ -285,6 +285,7 @@ var MediaPlayer = function(videoId){
         }
 
         this.pong = function(){
+            var namespace = "urn:x-cast:com.google.cast.tp.heartbeat";
             channel.send(Protocol.buildJSONProtocol(namespace, senderId, {"type":"PONG"}));
         };
     };
