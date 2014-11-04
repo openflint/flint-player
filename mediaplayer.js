@@ -103,11 +103,11 @@ var MediaPlayer = function(videoId){
     self.requestIdPing = 0;
     self.requestIdGetStatus = 0;
 
-    var channelId = guid(),
-        wsAddress = "ws://"+receiverDaemon.localIpAddress+":9439/channels/"+channelId;
+    var channelId = guid();
     
     console.info("---------------------------------------------------> player receiverDaemon: ");
     receiverDaemon.on("opened", function(){
+        var wsAddress = "ws://"+receiverDaemon.localIpAddress+":9439/channels/"+channelId;
         console.info("-------------------------------------> player ws addr: ", wsAddress);
         receiverDaemon.send({"type":"additionaldata","additionaldata":{ "serverId": wsAddress}});
     });
