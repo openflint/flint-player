@@ -29,8 +29,8 @@ function guid(){
 var ReceiverDaemon = function(){
     var self = this;
 
-    // var wsServer = "ws://localhost:9431/receiver/"+appid,
-    var wsServer = "ws://localhost:9431/receiver",
+    var wsServer = "ws://localhost:9431/receiver/"+appid,
+    // var wsServer = "ws://localhost:9431/receiver",
         ws = null,
         sender = {
             "count":0,
