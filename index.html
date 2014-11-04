@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+    receiver sdk用法。
+    第一步：在</head>之前添加appid, 如下:
+    <script>
+        var appid = "~browser";
+    </script>
+    第二步：
+    在</body>标签之后引入receiver sdk, 如下:
+    <script src="revceiver_sdk.js"></script>
+    
+    第三步[可选]：
+    如果需要使用内置的mediaplayer.js，在引入receiver后，再引入mediaplayler.js, 如下：
+    <script src="mediaplayer.js"></script>
+
+
+-->
+<html>
+    <head>
+        <title>firefly1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+        <style type="text/css">
+            html{width: 100%;height: 100%;background: #FFF;}
+            /*set video */
+            video{width: 50%;}
+        </style>
+        <script>
+            var appid = "~browser";
+        </script>
+    </head>
+    <body>
+        <video id="mediaplayer"></video>
+        <div id="msg"></div>
+    </body>
+
+    <script>
+        var now = new Date(),
+            y = now.getFullYear(),
+            m = now.getMonth(),
+            d = now.getDay(),
+            h = now.getHours(),
+            i = now.getMinutes(),
+            s = now.getSeconds();
+        document.getElementById("msg").innerHTML = h+":"+i+":"+s;
+    </script>
+    
+    <script src="revceiver_sdk.js"></script>
+    <script src="mediaplayer.js"></script>
+    
+    <script>
+        var mediaPlayer = new MediaPlayer("mediaplayer");
+
+        // 9439
+        // receiverDaemon.on("message", function(data){
+        //     // on message
+        //     logger.info("----------------------socket on message-------------------");
+        //     logger.info("message received...........: ", data);
+        // });
+        // receiverDaemon.on("opened", function(){
+        //     // ws socket  opened
+        //     logger.info("----------------------socket opened-------------------");
+        // });
+
+        // receiverDaemon.on("closed", function(){
+        //     // ws socket closed
+        //     logger.info("----------------------socket closed-------------------");
+        // });
+
+        // receiverDaemon.on("senderconnected", function(sender){
+        //     logger.info("----------------------senderconnected-------------------");
+        // });
+
+        // receiverDaemon.on("senderdisconnected", function(sender){
+        //     logger.info("----------------------senderdisconnected-------------------");
+        // });
+        // receiverDaemon.on("error", function(evt){
+        //     // socket error
+        //     logger.info("----------------------socket error-------------------");
+        //     console.info("in error :", evt, evt.message, evt.socketReadyState);
+        // });
+
+        // receiverDaemon.close();
+        // receiverDaemon.send({"type":"additionaldata","additionaldata":{}});
+    </script>
+</html>
