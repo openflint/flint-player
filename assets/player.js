@@ -636,9 +636,7 @@ window.onload = function () {
     elementControl.init();
     var videoElement = document.getElementById('video');
     //todo
-    setTimeout(function(){
-        window.player = new sampleplayer.FlingPlayer(videoElement);
-    },3000);
+    window.player = new sampleplayer.FlingPlayer(videoElement);
 
     // old version
     /*

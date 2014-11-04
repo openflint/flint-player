@@ -4,72 +4,11 @@
 * 协议数据处理
 **/
 var Protocol = {
-    "buildJSONProtocol": function(namespace, senderId, data){
+    "buildJSONProtocol": function(namespace, data){
         return JSON.stringify({
             "namespace": namespace,
-            "senderId": senderId,
             "data": JSON.stringify(data)
         });
-    }
-};
-
-/*
-* 与sender端的消息通道类
-**/
-var MessageChannel = function(channelId){
-    var self = this;
-    var wsServer = "ws://127.0.0.1:9439/channels/"+channelId,
-    // var wsServer = "ws://127.0.0.1:9439/receiver",
-        msg = null,
-        senderId = null,
-        messageType = null;
-
-    var ws = null;
-        ws = new WebSocket(wsServer);
-    ws.onopen = function (evt) {
-        console.info("-------------------------------------> player onopen");
-    }; 
-    ws.onclose = function (evt) { 
-        console.info("-------------------------------------> player onclose");
-    }; 
-    ws.onmessage = function (evt) { 
-        console.info("-------------------------------------> player onmessage evt.data : ", evt.data);
-        msg = JSON.parse(evt.data);
-        console.info("-------------------------------------> player onmessage: ", msg);
-        if("senderId" in msg){
-            senderId = msg.senderId;
-            messageType = msg.type;
-            
-            ("onmessage" in self)&&(msg)&&self.onmessage(msg);
-        }
-    }; 
-    ws.onerror = function (evt) {
-        console.info("-------------------------------------> player onerror");
-    };
-
-    self.send = function(data, broadcast){
-        console.info("-------------------------------------> player send: ", data);
-        var messageData = {};
-        if(broadcast){
-            messageData["senderId"] = "*:*"; 
-        }else{
-            messageData["senderId"] = senderId; 
-        }
-        messageData["data"] = data;
-        messageData = JSON.stringify(messageData);
-        if(ws&& ws.readyState==1){
-            ws.send(messageData);
-        }else if(ws&& ws.readyState==0){
-            setTimeout(function(){
-                self.send(messageData);
-            }, 50);
-        }else{
-            throw Error("Underlying websocket is not open");
-        }
-    };
-
-    self.on = function(type, func){
-        self["on"+type] = func;
     }
 };
 
@@ -105,19 +44,16 @@ var MediaPlayer = function(videoId){
 
     var channelId = guid();
     
-    console.info("---------------------------------------------------> player receiverDaemon: ");
-
     //Receiver Daemon instance
-    // var receiverDaemon = new ReceiverDaemon();
-    /**
-    * start Receiver Daemon
-    */
-    receiverDaemon.open();
+    var receiverDaemon = new ReceiverDaemon();
+    //listen receiver launch event
     receiverDaemon.on("opened", function(){
         var wsAddress = "ws://"+receiverDaemon.localIpAddress+":9439/channels/"+channelId;
         console.info("-------------------------------------> player ws addr: ", wsAddress);
         receiverDaemon.send({"type":"additionaldata","additionaldata":{ "serverId": wsAddress}});
     });
+    //start Receiver Daemon
+    receiverDaemon.open();
     
     var video = (typeof(videoId)=="string")?document.getElementById(videoId):videoId;
     if(video==null){
@@ -136,7 +72,7 @@ var MediaPlayer = function(videoId){
                 syncExecute(readyCallback);
             },50);
         }
-    };    
+    };
 
     /*
     * 创建消息通道对象
@@ -199,8 +135,7 @@ var MediaPlayer = function(videoId){
     * 用于将video的状态发送给sender，完成与sender的heartbeat
     **/
     var MessageReport = function(){
-        var namespace = "urn:x-cast:com.google.cast.media",
-            senderId = "*:*";
+        var namespace = "urn:x-cast:com.google.cast.media";
             
         function loadData(){
             return {
@@ -226,7 +161,7 @@ var MediaPlayer = function(videoId){
             var messageData = loadData();
             messageData.status[0].playerState = "IDLE";
             messageData.status[0].idleReason = idleReason;
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, messageData));
+            channel.send(Protocol.buildJSONProtocol(namespace, messageData));
         };
         this.loadmetadata = function(){
             var messageData = loadData();
@@ -246,24 +181,24 @@ var MediaPlayer = function(videoId){
                     "metadataType": self.mediaMetadata.media.metadata.metadataType
                 }
             };
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, messageData));
+            channel.send(Protocol.buildJSONProtocol(namespace, messageData));
         };
         this.playing = function(){
             var messageData = loadData();
             messageData["requestId"] = self.requestIdPlay;
             self.playerState = messageData.status[0].playerState = "PLAYING";
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, messageData));
+            channel.send(Protocol.buildJSONProtocol(namespace, messageData));
         };
         this.paused = function(){
             var messageData = loadData();
             messageData["requestId"] = self.requestIdPause;
             self.playerState = messageData.status[0].playerState = "PAUSED";
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, messageData));
+            channel.send(Protocol.buildJSONProtocol(namespace, messageData));
         };
         this.buffering = function(){
             var messageData = loadData();
             messageData.status[0].playerState = "BUFFERING";
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, messageData));
+            channel.send(Protocol.buildJSONProtocol(namespace, messageData));
         };
 
         this.syncPlayerState = function(type){
@@ -288,30 +223,30 @@ var MediaPlayer = function(videoId){
                 };
             }
             messageData.status[0].playerState = self.playerState;
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, messageData));
+            channel.send(Protocol.buildJSONProtocol(namespace, messageData));
         }
 
         this.pong = function(){
             var namespace = "urn:x-cast:com.google.cast.tp.heartbeat";
-            channel.send(Protocol.buildJSONProtocol(namespace, senderId, {"type":"PONG"}));
+            channel.send(Protocol.buildJSONProtocol(namespace, {"type":"PONG"}));
         };
     };
     //实例化MessageReport对象
     var messageReport = new MessageReport();
 
     /*
-    * 监听sender端消息
+    * 监听sender端消息 todo
     **/
-    channel.on("message", function(msg){
+    channel.on("message", function(senderId, messageType, message){
         var messageData = null;
 
-        switch(msg.type){
+        switch(messageType){
             case "senderConnected":
             case "senderDisconnected":
                 break;
             case "message":
-                messageData = JSON.parse(msg.data);
-                console.info("=================================channel message messageData: ", messageData.data);
+                messageData = JSON.parse(message.data);
+                console.info("=================================channel message messageData: ", senderId, messageType, message, messageData);
                 self.requestId = messageData.requestId;
                 messageData = JSON.parse(messageData.data);
                 if("type" in messageData){
@@ -354,7 +289,7 @@ var MediaPlayer = function(videoId){
                 }
                 break;
         }
-        ("onmessage" in self)&&self.onmessage(msg);
+        ("onmessage" in self)&&self.onmessage(message);
     });
 
     //video event linstener 

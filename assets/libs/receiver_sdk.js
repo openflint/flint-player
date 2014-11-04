@@ -174,3 +174,62 @@ var ReceiverDaemon = function(){
         self["on"+type] = func;
     };
 };
+
+/*
+* 与sender端的消息通道类
+**/
+var MessageChannel = function(channelId){
+    var self = this;
+    var wsServer = "ws://127.0.0.1:9439/channels/"+channelId;
+    // var wsServer = "ws://127.0.0.1:9439/receiver";
+
+    var ws = null;
+        ws = new WebSocket(wsServer);
+    ws.onopen = function (evt) {
+        console.info("-------------------------------------> player onopen");
+    }; 
+    ws.onclose = function (evt) { 
+        console.info("-------------------------------------> player onclose");
+    }; 
+    ws.onmessage = function (evt) { 
+        console.info("-------------------------------------> player onmessage evt.data : ", evt.data);
+        var msg = JSON.parse(evt.data);
+        console.info("-------------------------------------> player onmessage: ", msg);
+        if("senderId" in msg){
+            ("onmessage" in self)&&(msg)&&self.onmessage(msg.senderId, msg.type, msg);
+        }
+    }; 
+    ws.onerror = function (evt) {
+        console.info("-------------------------------------> player onerror");
+    };
+
+    /*
+    * Send message to sender
+    * @param {String}
+    * @param {String} sender id default is broadcast(*:*)
+    **/
+    self.send = function(data, senderId){
+        console.info("-------------------------------------> player send: ", data);
+        var messageData = {};
+        if(!senderId){
+            messageData["senderId"] = "*:*"; 
+        }else{
+            messageData["senderId"] = senderId;    
+        }
+        messageData["data"] = data;
+        messageData = JSON.stringify(messageData);
+        if(ws&& ws.readyState==1){
+            ws.send(messageData);
+        }else if(ws&& ws.readyState==0){
+            setTimeout(function(){
+                self.send(messageData);
+            }, 50);
+        }else{
+            throw Error("Underlying websocket is not open");
+        }
+    };
+
+    self.on = function(type, func){
+        self["on"+type] = func;
+    }
+};
