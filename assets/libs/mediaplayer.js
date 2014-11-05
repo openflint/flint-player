@@ -32,6 +32,7 @@ var MediaPlayer = function(videoId){
     self.title = "";
     self.subtitle = "";
     self.mediaMetadata = null;
+    self.videoVolume = 0;
     //----------------------------------------------
     self.requestId = 0;
     self.requestIdLoad = 0;
@@ -78,59 +79,6 @@ var MediaPlayer = function(videoId){
     * 创建消息通道对象
     **/
     var channel = new MessageChannel(channelId);
-    
-    self.load = function(url, videoType, title, subtitle, mediaMetadata){
-        self.mediaMetadata = mediaMetadata;
-
-        self.status = "LOADDING";
-        var source = document.createElement('source');
-        source.src = url;
-        if(typeof(videoType)!="undefined"&&videoType){
-            source.type = videoType;
-        }
-        video.innerHTML="";
-        video.appendChild(source);
-        video.load();
-
-        if(typeof(title)!="undefined"&&!title){
-            self.title = title;
-        }
-        if(typeof(subtitle)!="undefined"&&!subtitle){
-            self.subtitle = subtitle;
-        }
-        video.autoplay = true;
-        video.controls = false;
-    };
-
-    self.pause = function(){
-        syncExecute(function(){
-            video.pause();
-        });
-    };
-
-    self.play = function(){
-        syncExecute(function(){
-            video.play();
-        });
-    };
-
-    self.seek = function(value){
-        syncExecute(function(){
-            var seekToTime = value;
-            if(seekToTime < 0 || seekToTime > video.duration){
-                return;
-            }
-            video.currentTime = seekToTime;
-        });
-    };
-
-    self.volumechange = function(num){
-        console.info("==========================self.volumechange===["+num+"]=======================")
-        syncExecute(function(){
-            video.volume = num;
-        });
-        ("onvolumechange" in self)&&(self.onvolumechange(num));
-    };
 
     /*
     * 消息报告类
@@ -233,8 +181,65 @@ var MediaPlayer = function(videoId){
             channel.send(Protocol.buildJSONProtocol(namespace, {"type":"PONG"}));
         };
     };
+
     //实例化MessageReport对象
     var messageReport = new MessageReport();
+
+    self.load = function(url, videoType, title, subtitle, mediaMetadata){
+        self.mediaMetadata = mediaMetadata;
+
+        self.status = "LOADDING";
+        var source = document.createElement('source');
+        source.src = url;
+        if(typeof(videoType)!="undefined"&&videoType){
+            source.type = videoType;
+        }
+        video.innerHTML="";
+        video.appendChild(source);
+        video.load();
+
+        if(typeof(title)!="undefined"&&!title){
+            self.title = title;
+        }
+        if(typeof(subtitle)!="undefined"&&!subtitle){
+            self.subtitle = subtitle;
+        }
+        video.autoplay = true;
+        video.controls = false;
+    };
+
+    self.pause = function(){
+        syncExecute(function(){
+            video.pause();
+        });
+    };
+
+    self.play = function(){
+        syncExecute(function(){
+            video.play();
+        });
+    };
+
+    self.seek = function(value){
+        syncExecute(function(){
+            var seekToTime = value;
+            if(seekToTime < 0 || seekToTime > video.duration){
+                return;
+            }
+            video.currentTime = seekToTime;
+        });
+    };
+
+    self.volumechange = function(num){
+        console.info("==========================self.volumechange===["+num+"]=======================");
+        syncExecute(function(){
+            video.volume = num;
+        });
+        ("onvolumechange" in self)&&self.onvolumechange(num);
+        if(num==self.videoVolume){
+            messageReport.syncPlayerState("volumechange");
+        }
+    };
 
     /*
     * 监听sender端消息 todo
@@ -318,6 +323,7 @@ var MediaPlayer = function(videoId){
         messageReport.idle("FINISHED");
     });
     video.addEventListener("volumechange", function(e){
+        self.videoVolume = video.volume;
         console.info("----------------------------------volumechange------------------------------");
         messageReport.syncPlayerState("volumechange");
     });

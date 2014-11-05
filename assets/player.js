@@ -343,7 +343,6 @@ sampleplayer.FlingPlayer = function (element) {
     this.mediaElement_.addEventListener('loadedmetadata', this.onLoadedMetadata_.bind(this), false);
 
     //todo 
-    console.info("----------------------------------volumechange 1------------------------------");
     var player = new MediaPlayer(this.mediaElement_);
     player.on("volumechange", function(num){
         console.info("----------------------------------volumechange 2------------------------------");
