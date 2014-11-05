@@ -125,6 +125,7 @@ var MediaPlayer = function(videoId){
     };
 
     self.volumechange = function(num){
+        console.info("==========================self.volumechange===["+num+"]=======================")
         syncExecute(function(){
             video.volume = num;
         });
