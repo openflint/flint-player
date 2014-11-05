@@ -367,7 +367,15 @@ sampleplayer.FlingPlayer = function (element) {
 };
 
 sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
+    var self = this;
     elementControl.player.loadedmetadata(this.mediaElement_.duration);
+    // elementControl.player.hideLogo();
+    self.setState_(sampleplayer.State.LOADING);
+    self.loading_time_out_ = setTimeout(function(){
+        self.setState_(sampleplayer.State.BUFFERING);
+        clearTimeout(self.loading_time_out_);
+        self.loading_time_out_ = undefined;
+    },10000);
 
 }
 
