@@ -128,6 +128,7 @@ var MediaPlayer = function(videoId){
         syncExecute(function(){
             video.volume = num;
         });
+        ("onvolumechange" in self)&&(self.onvolumechange(num));
     };
 
     /*
@@ -153,7 +154,7 @@ var MediaPlayer = function(videoId){
                         }
                     }
                 ],
-                "requestId": self.requestId
+                "requestId": 0
             };
         }
 
@@ -316,6 +317,7 @@ var MediaPlayer = function(videoId){
         messageReport.idle("FINISHED");
     });
     video.addEventListener("volumechange", function(e){
+        console.info("----------------------------------volumechange------------------------------");
         messageReport.syncPlayerState("volumechange");
     });
     video.addEventListener("seeked", function(e){

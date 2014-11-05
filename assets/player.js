@@ -343,10 +343,27 @@ sampleplayer.FlingPlayer = function (element) {
     this.mediaElement_.addEventListener('loadedmetadata', this.onLoadedMetadata_.bind(this), false);
 
     //todo 
-    var playerDiv = new MediaPlayer(this.mediaElement_);
-};
+    console.info("----------------------------------volumechange 1------------------------------");
+    var player = new MediaPlayer(this.mediaElement_);
+    player.on("volumechange", function(num){
+        console.info("----------------------------------volumechange 2------------------------------");
+        var volume = Math.round(num * 10);
+        var self = this;
+        console.log("MEDIA VOLUME CHANGE " + volume);
 
-sampleplayer.FlingPlayer.prototype.onVolumeChange_ = function () {
+        if (volume == 0) {
+            elementControl.volumeChange.quiet();
+        } else if (volume > 0 && volume <= 10) {
+            elementControl.volumeChange.setVolume(volume);
+        }
+        clearTimeout(volumeset_timeout);
+        volumeset_timeout = window.setTimeout(function () {
+            elementControl.volumeChange.hideStatic();
+            if (player.state_ == sampleplayer.State.PAUSED) {
+                elementControl.player.showPlayIcon();
+            }
+        }, 3000);
+    });
 
 };
 
@@ -354,6 +371,10 @@ sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
     elementControl.player.loadedmetadata(this.mediaElement_.duration);
 
 }
+
+
+sampleplayer.FlingPlayer.prototype.onVolumeChange_ = function () {}
+
 
 /**
  * Sets the state of the player
@@ -638,28 +659,25 @@ window.onload = function () {
     //todo
     window.player = new sampleplayer.FlingPlayer(videoElement);
 
-    // old version
-    /*
-    window.flingreceiver.onMediaVolumeChanged = function (event) {
-        console.log("onMediaVolumeChanged : " + JSON.stringify(event));
+    
+    // window.flingreceiver.onMediaVolumeChanged = function (event) {
+        
 
+    //     var volume = Math.round(player.mediaElement_.volume * 10);
+    //     var self = this;
+    //     console.log("MEDIA VOLUME CHANGE " + volume);
 
-        var volume = Math.round(player.mediaElement_.volume * 10);
-        var self = this;
-        console.log("MEDIA VOLUME CHANGE " + volume);
-
-        if (volume == 0) {
-            elementControl.volumeChange.quiet();
-        } else if (volume > 0 && volume <= 10) {
-            elementControl.volumeChange.setVolume(volume);
-        }
-        clearTimeout(volumeset_timeout);
-        volumeset_timeout = window.setTimeout(function () {
-            elementControl.volumeChange.hideStatic();
-            if (player.state_ == sampleplayer.State.PAUSED) {
-                elementControl.player.showPlayIcon();
-            }
-        }, 3000);
-    }
-    */
+    //     if (volume == 0) {
+    //         elementControl.volumeChange.quiet();
+    //     } else if (volume > 0 && volume <= 10) {
+    //         elementControl.volumeChange.setVolume(volume);
+    //     }
+    //     clearTimeout(volumeset_timeout);
+    //     volumeset_timeout = window.setTimeout(function () {
+    //         elementControl.volumeChange.hideStatic();
+    //         if (player.state_ == sampleplayer.State.PAUSED) {
+    //             elementControl.player.showPlayIcon();
+    //         }
+    //     }, 3000);
+    // }
 };
