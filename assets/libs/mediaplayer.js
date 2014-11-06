@@ -60,7 +60,7 @@ var MediaPlayer = function(videoId){
     if(video==null){
         throw Error("video element undefined!");
     }
-
+    video.style.visibility = "visible";
     function syncExecute (readyCallback){
         if(self.status=="READY"){
             if(typeof(readyCallback!="undefined"&&readyCallback!=null)){
@@ -112,6 +112,9 @@ var MediaPlayer = function(videoId){
             messageData.status[0].playerState = "IDLE";
             messageData.status[0].idleReason = idleReason;
             channel.send(Protocol.buildJSONProtocol(namespace, messageData));
+            if(idleReason=="FINISHED"){
+                video.style.visibility = "hidden";
+            }
         };
         this.loadmetadata = function(){
             var messageData = loadData();

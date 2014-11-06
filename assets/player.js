@@ -344,8 +344,9 @@ sampleplayer.FlingPlayer = function (element) {
 
     //todo 
     var player = new MediaPlayer(this.mediaElement_);
+
+    //volume change event
     player.on("volumechange", function(num){
-        console.info("----------------------------------volumechange 2------------------------------");
         var volume = Math.round(num * 10);
         var self = this;
         console.log("MEDIA VOLUME CHANGE " + volume);
@@ -363,7 +364,7 @@ sampleplayer.FlingPlayer = function (element) {
             }
         }, 3000);
     });
-
+    //video finish event todo
 };
 
 sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
