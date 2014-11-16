@@ -366,7 +366,7 @@ sampleplayer.FlingPlayer = function (element) {
         }, 3000);
     });
     //video finish event todo
-    player.start();
+    receiverWrapper.open();
 };
 
 sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
