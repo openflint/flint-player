@@ -221,9 +221,10 @@ h1 {
 }
 
 .i.i-alert {
+    background: url("imgs/i.png") repeat-x scroll transparent;
     width: 122px;
     height: 122px;
-    background-position: -1153px -254px;
+    background-position: -902px -275px;
     display: inline-block;
 }
 

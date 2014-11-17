@@ -436,7 +436,7 @@ sampleplayer.FlingPlayer.prototype.setState_ = function (state, loading) {
             elementControl.player.hideTimelineStatic();
             break;
         case sampleplayer.State.IDLE:
-            elementControl.player.showLogo();
+            elementControl.player.hideLogo();
             elementControl.player.hidePlayIconStatic();
             elementControl.player.loadingStop();
             elementControl.player.hideTitleStatic();
@@ -595,35 +595,25 @@ sampleplayer.FlingPlayer.prototype.onError_ = function (e) {
     switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
             elementControl.alertBox.show('You aborted the video playback.');
-            window.setTimeout(function () {
-                window.close();
-            }, 10000);
             break;
         case e.target.error.MEDIA_ERR_NETWORK:
             elementControl.alertBox.show('Video download failed due to network error. ');
-            window.setTimeout(function () {
-                window.close();
-            }, 10000);
             break;
         case e.target.error.MEDIA_ERR_DECODE:
             elementControl.alertBox.show('The video playback was aborted due to the video used features can not be supported.');
-            window.setTimeout(function () {
-                window.close();
-            }, 10000);
             break;
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
             elementControl.alertBox.show('The video could not be loaded because the format is not supported. ');
-            window.setTimeout(function () {
-                window.close();
-            }, 10000);
             break;
         default:
             elementControl.alertBox.show('An unknown error occurred.');
-            window.setTimeout(function () {
-                window.close();
-            }, 10000);
             break;
     }
+
+    this.setState_(sampleplayer.State.IDLE);
+    window.setTimeout(function () {
+        window.close();
+    }, 10000);
 };
 
 /**
