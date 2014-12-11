@@ -592,6 +592,7 @@ sampleplayer.FlingPlayer.prototype.onVisibilityChange_ = function () {
  */
 sampleplayer.FlingPlayer.prototype.onError_ = function (e) {
     console.log("MEDIA ELEMENT ERROR " + e.target.error.code);
+    var self = this;
     switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
             elementControl.alertBox.show('You aborted the video playback.');
