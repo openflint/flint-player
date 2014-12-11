@@ -348,6 +348,9 @@ sampleplayer.FlingPlayer = function (element) {
 
     //volume change event
     player.on("volumechange", function(num){
+        if(player.status=="IDLE"){
+            return;
+        }
         var volume = Math.round(num * 10);
         var self = this;
         console.log("MEDIA VOLUME CHANGE " + volume);
