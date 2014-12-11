@@ -612,6 +612,7 @@ sampleplayer.FlingPlayer.prototype.onError_ = function (e) {
 
     this.setState_(sampleplayer.State.IDLE);
     window.setTimeout(function () {
+        self.setState_(sampleplayer.State.DONE);
         elementControl.alertBox.hide();
     }, 10000);
 };
