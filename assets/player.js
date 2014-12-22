@@ -278,6 +278,8 @@ elementControl.player = {
 
 var volumeset_timeout = null;
 
+var videoElement = null;
+
 /****************************/
 /**
  * <p>
@@ -530,6 +532,9 @@ sampleplayer.FlingPlayer.prototype.onStop_ = function () {
  */
 sampleplayer.FlingPlayer.prototype.onEnded_ = function () {
     console.log('onEnded');
+    if (videoElement) {
+        videoElement.src = null;
+    }
     this.setState_(sampleplayer.State.DONE);
 };
 
@@ -660,7 +665,7 @@ sampleplayer.getValue_ = function (obj, keys) {
  */
 window.onload = function () {
     elementControl.init();
-    var videoElement = document.getElementById('video');
+    videoElement = document.getElementById('video');
     //todo
     window.player = new sampleplayer.FlingPlayer(videoElement);
 
