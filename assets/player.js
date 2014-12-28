@@ -337,6 +337,7 @@ sampleplayer.FlingPlayer = function (element) {
         false);
     this.mediaElement_.addEventListener('seeked', this.onSeekEnd_.bind(this),
         false);
+    this.mediaElement_.addEventListener('play', this.onPlay_.bind(this), false);
 
     this.mediaElement_.addEventListener('volumechange', this.onVolumeChange_.bind(this), false);
 
@@ -383,7 +384,12 @@ sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
         self.loading_time_out_ = undefined;
     },10000);
 
-}
+};
+
+sampleplayer.FlingPlayer.prototype.onPlay_ = function () {
+    console.log('onPlay');
+    //this.setState_(sampleplayer.State.PLAYING);
+};
 
 
 sampleplayer.FlingPlayer.prototype.onVolumeChange_ = function () {}
