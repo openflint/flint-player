@@ -388,7 +388,7 @@ sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
 
 sampleplayer.FlingPlayer.prototype.onPlay_ = function () {
     console.log('onPlay');
-    //this.setState_(sampleplayer.State.PLAYING);
+    this.setState_(sampleplayer.State.PLAYING);
 };
 
 
