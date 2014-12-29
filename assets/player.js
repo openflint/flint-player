@@ -388,6 +388,8 @@ sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
 
 sampleplayer.FlingPlayer.prototype.onPlay_ = function () {
     console.log('onPlay');
+    this.loading_time_out_ && clearTimeout(this.loading_time_out_);
+    console.log('onplay clear time out');
     this.setState_(sampleplayer.State.PLAYING);
 };
 
