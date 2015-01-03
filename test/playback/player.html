@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flint Player</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+        <link rel="stylesheet" href="assets/player.css"/>
+    </head>
+    <body>
+        <video id="video" class="video"></video>
+        <div id="loading" class="loading hide">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+              <path opacity=".4" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4" fill="#ffffff"/>
+              <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z" fill="#c16a10">
+                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="0.8s" repeatCount="indefinite" />
+              </path>
+            </svg>
+
+        </div>
+        <i id="icon-option" class="i hide"></i>
+
+        <div id="timeline" class="timeline hide">
+            <div class="timeline-inner">
+                <div class="timeline-bg base-bg"></div>
+                <div id="loaded-process" class="timeline-bg loaded-bg"></div>
+                <div id="played-process" class="timeline-bg played-bg"></div>
+                <span id="time-played" class="time time-played"></span>
+                <span id="time-total" class="time time-total"></span>
+                <div id="time-label" class="time-label hide">
+                    <span id="time-played-string"></span>
+                </div>
+            </div>
+        </div>
+        <h1 id="title" class="title hide"></h1>
+
+        <div id="logo" class="logo hide">
+            <img src="assets/imgs/logo.png"/>
+        </div>
+
+        <div id="alert" class="alert hide">
+            <div class="alert-inner">
+                <div class="alert-backend"></div>
+                <div class="alert-msg">
+                    <i class="i i-alert"></i>
+
+                    <div class="text">
+                        <span id="alert-text" class="text-inner"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="http://openflint.github.io/flint-receiver-sdk/v1/receiver.js"></script>
+    <script src="http://openflint.github.io/flint-receiver-sdk/v1/receiver_wrapper.js"></script>
+    <script src="assets/libs/mediaplayer.js"></script>
+    <script src="assets/player.js"></script>
+</html>
