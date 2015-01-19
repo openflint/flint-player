@@ -345,7 +345,7 @@ sampleplayer.FlingPlayer = function (element) {
 
     this.mediaElement_.addEventListener('loadeddata', this.onLoadedData_.bind(this), false);
     //todo 
-    var receiverWrapper = new ReceiverManagerWrapper("~flintplayer");
+    var receiverWrapper = new FlintReceiverManager("~flintplayer");
     var player = new MediaPlayer(receiverWrapper, this.mediaElement_);
 
     //volume change event
