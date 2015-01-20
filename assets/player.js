@@ -377,6 +377,7 @@ sampleplayer.FlingPlayer = function (element) {
 sampleplayer.FlingPlayer.prototype.onLoadedMetadata_ = function () {
     var self = this;
     elementControl.player.loadedmetadata(this.mediaElement_.duration);
+    elementControl.player.buffered(0);
     // elementControl.player.hideLogo();
     self.setState_(sampleplayer.State.LOADING);
     self.loading_time_out_ = setTimeout(function(){
