@@ -273,10 +273,21 @@ elementControl.player = {
     },
     "hideTimeLabelStatic": function(){
         this.timeLabel.className = "time-label hide_static";
+    },
+
+    "hideAlertDlg" : function() {
+        if (alert_dlg_timeout != null) {
+            clearTimeout(alert_dlg_timeout);
+            alert_dlg_timeout = null;
+        }
+
+        elementControl.alertBox.hide();
     }
 };
 
 var volumeset_timeout = null;
+
+var alert_dlg_timeout = null;
 
 /****************************/
 /**
@@ -421,6 +432,9 @@ sampleplayer.FlingPlayer.prototype.setState_ = function (state, loading) {
             elementControl.player.hidePlayIcon();
             elementControl.player.loadingStart();
             elementControl.player.hideLogo();
+
+            // hide alert dlg?
+            elementControl.player.hideAlertDlg();
             break;
         case sampleplayer.State.BUFFERING:
             elementControl.player.hideLogo();
@@ -633,7 +647,13 @@ sampleplayer.FlingPlayer.prototype.onError_ = function (e) {
     }
 
     this.setState_(sampleplayer.State.IDLE);
-    window.setTimeout(function () {
+
+    if (alert_dlg_timeout != null) {
+        clearTimeout(alert_dlg_timeout);
+        alert_dlg_timeout = null;
+    }
+
+    alert_dlg_timeout = window.setTimeout(function () {
         self.setState_(sampleplayer.State.DONE);
         elementControl.alertBox.hide();
     }, 10000);
