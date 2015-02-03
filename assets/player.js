@@ -381,6 +381,13 @@ sampleplayer.FlingPlayer = function (element) {
             }
         }, 3000);
     });
+
+    self = this;
+    player.on('stop', function(customData) {
+        console.log("receive other message![STOP]!!?");
+        self.onStop_(customData);
+    });
+
     //video finish event todo
     receiverWrapper.open();
 };
@@ -549,8 +556,9 @@ sampleplayer.FlingPlayer.prototype.onPause_ = function () {
  * Callback called when media has been stopped
  *
  */
-sampleplayer.FlingPlayer.prototype.onStop_ = function () {
-    console.log('onStop');
+sampleplayer.FlingPlayer.prototype.onStop_ = function (customData) {
+    console.log('onStop[' + customData + "]");
+
     var self = this;
     self.setState_(sampleplayer.State.DONE);
 };
